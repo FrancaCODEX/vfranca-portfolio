@@ -9,7 +9,8 @@ export function Footer({ dict }: { dict: Dictionary["footer"] }) {
   ];
 
   return (
-    <footer className="relative overflow-hidden border-t border-border">
+    <footer className="relative overflow-hidden">
+      <div aria-hidden="true" className="tricolor h-1 w-full" />
       <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-5 pt-10 text-sm text-muted sm:flex-row">
         <p className="text-center sm:text-left">
           © {new Date().getFullYear()} {profile.name}. {dict.built}

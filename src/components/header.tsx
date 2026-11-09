@@ -55,7 +55,10 @@ export function Header({ lang, dict }: Props) {
     <header className="fixed inset-x-0 top-3 z-40 px-3 sm:top-4">
       <div className="mx-auto flex h-14 max-w-6xl items-center justify-between gap-3 rounded-2xl border border-border bg-bg/70 px-3 shadow-[0_8px_30px_-12px_rgb(0_0_0/0.25)] backdrop-blur-xl sm:px-4">
         <Link href={home} className="flex items-center gap-2 font-mono text-sm font-semibold tracking-tight">
-          <span className="grid size-8 place-items-center rounded-lg bg-accent font-bold text-accent-fg">vf</span>
+          <span className="relative grid size-8 place-items-center overflow-hidden rounded-lg bg-[#0a0a0a] pb-0.5 font-bold text-white ring-1 ring-border">
+            vf
+            <span className="tricolor absolute inset-x-0 bottom-0 h-1" />
+          </span>
           <span className="hidden sm:inline">
             <span className="text-accent">~/</span>vfranca
           </span>

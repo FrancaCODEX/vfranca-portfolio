@@ -4,28 +4,29 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
-  --bg: #fafaf9;
+  /* Tricolor: vermelho de destaque sobre preto e branco */
+  --bg: #fafafa;
   --surface: #ffffff;
-  --surface-2: #f4f4f2;
-  --border: #e4e4e0;
-  --fg: #111214;
-  --muted: #5b6068;
-  --accent: #059669;
+  --surface-2: #f3f3f3;
+  --border: #e3e3e3;
+  --fg: #0a0a0a;
+  --muted: #5c5c5c;
+  --accent: #d0101e;
   --accent-fg: #ffffff;
-  --accent-soft: #05966914;
+  --accent-soft: #d0101e12;
   color-scheme: light;
 }
 
 .dark {
-  --bg: #0b0f14;
-  --surface: #11161d;
-  --surface-2: #161c25;
-  --border: #222a35;
-  --fg: #e8ebef;
-  --muted: #8b95a3;
-  --accent: #10b981;
-  --accent-fg: #04130d;
-  --accent-soft: #10b9811a;
+  --bg: #0a0a0a;
+  --surface: #121212;
+  --surface-2: #1a1a1a;
+  --border: #282828;
+  --fg: #f5f5f5;
+  --muted: #9a9a9a;
+  --accent: #ef2b38;
+  --accent-fg: #ffffff;
+  --accent-soft: #ef2b381c;
   color-scheme: dark;
 }
 
@@ -233,4 +234,14 @@ body {
   .animate-float {
     animation: none !important;
   }
+}
+
+/* Faixa tricolor (vermelho, branco e preto) */
+.tricolor {
+  background: linear-gradient(
+    to right,
+    var(--accent) 0 33.33%,
+    #ffffff 33.33% 66.66%,
+    #000000 66.66% 100%
+  );
 }
