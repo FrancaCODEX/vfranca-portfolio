@@ -28,7 +28,7 @@ function Screenshot({ project, lang }: { project: Project; lang: Locale }) {
           width={image.width}
           height={image.height}
           sizes="(min-width: 1024px) 560px, 100vw"
-          className="w-full object-cover object-top transition duration-700 group-hover:scale-[1.03]"
+          className="h-full w-full object-cover object-left-top transition duration-700 group-hover:scale-[1.03]"
         />
       </div>
     </div>

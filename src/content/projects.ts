@@ -92,6 +92,12 @@ export const projects: Project[] = [
     // demo: "https://critplay.vercel.app",
     hasCaseStudy: true,
     modules: ["auth", "games", "diary", "reviews", "social/feed", "moderation", "integrations/rawg", "integrations/ggdeals"],
+    image: {
+      src: "/projects/critplay-destaque.webp",
+      width: 1905,
+      height: 914,
+      alt: { pt: "Tela inicial do CritPlay com carrossel de destaques", en: "CritPlay home screen with the featured carousel" },
+    },
   },
 ];
 
