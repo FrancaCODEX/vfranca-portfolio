@@ -24,7 +24,7 @@ export function ExperienceSection({ lang, title, eyebrow, current }: Props) {
                     <p className="text-accent">{pick(exp.role, lang)}</p>
                   </div>
                   <span className="rounded-full border border-border bg-surface-2 px-3 py-1 font-mono text-xs text-muted">
-                    {exp.start} — {exp.end ?? current}
+                    {exp.start} – {exp.end ?? current}
                   </span>
                 </div>
                 <ul className="mt-6 grid gap-3 text-sm text-muted sm:grid-cols-2">

@@ -54,7 +54,7 @@ export async function sendContact(_prev: ContactState, formData: FormData): Prom
       from: process.env.CONTACT_FROM_EMAIL ?? "Portfólio <onboarding@resend.dev>",
       to: [to],
       reply_to: email,
-      subject: `${subjectPrefix[type]} ${name} — via portfólio`,
+      subject: `${subjectPrefix[type]} ${name} (via portfólio)`,
       text: `Nome: ${name}\nE-mail: ${email}\nTipo: ${type}\n\n${message}`,
       html: `<p><strong>Nome:</strong> ${escapeHtml(name)}<br/><strong>E-mail:</strong> ${escapeHtml(email)}<br/><strong>Tipo:</strong> ${type}</p><p style="white-space:pre-wrap">${escapeHtml(message)}</p>`,
     }),

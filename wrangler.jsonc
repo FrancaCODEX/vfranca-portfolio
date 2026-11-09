@@ -16,6 +16,8 @@
     }
   ],
   "observability": { "enabled": true },
+  // Não apaga variáveis criadas pelo painel da Cloudflare a cada deploy.
+  "keep_vars": true,
   "vars": {
     "CONTACT_TO_EMAIL": "vfranca.dev@gmail.com"
   }

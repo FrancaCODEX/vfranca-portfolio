@@ -27,7 +27,7 @@ export function DegreeList({ lang, dict }: Pick<Props, "lang" | "dict">) {
             </div>
             <div className="relative flex flex-col items-start gap-2 sm:items-end">
               <span className="rounded-full border border-border bg-surface-2 px-3 py-1 font-mono text-xs text-muted">
-                {d.start} — {d.inProgress ? dict.inProgress : d.end}
+                {d.start} – {d.inProgress ? dict.inProgress : d.end}
               </span>
               {d.link && (
                 <a href={d.link} target="_blank" rel="noreferrer" className="text-sm font-medium text-accent hover:underline">

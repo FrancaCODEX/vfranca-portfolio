@@ -8,7 +8,7 @@ export function ThemeToggle({ label }: { label: string }) {
     try {
       localStorage.setItem("theme", isDark ? "dark" : "light");
     } catch {
-      // localStorage indisponível (modo privado etc.) — o tema só não fica salvo.
+      // localStorage indisponível (modo privado etc.): o tema só não fica salvo.
     }
   };
 

@@ -32,7 +32,7 @@ export function ContactForm({ dict, email }: Props) {
 
   useEffect(() => {
     if (state.status === "success") formRef.current?.reset();
-    // Turnstile: um token só vale uma vez — gera outro depois de cada envio.
+    // Turnstile: um token só vale uma vez, então gera outro depois de cada envio.
     if (state.status !== "idle") (window as { turnstile?: { reset: () => void } }).turnstile?.reset();
   }, [state]);
 
@@ -93,7 +93,7 @@ export function ContactForm({ dict, email }: Props) {
         <textarea name="message" rows={5} required className={cn(inputClass, "resize-y")} aria-invalid={!!errors.message} />
       </Field>
 
-      {/* Honeypot — invisível para pessoas. */}
+      {/* Honeypot: invisível para pessoas. */}
       <input type="text" name="website" tabIndex={-1} autoComplete="off" className="hidden" aria-hidden="true" />
 
       {siteKey && (

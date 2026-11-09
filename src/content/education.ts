@@ -62,7 +62,7 @@ export const certificates: Certificate[] = [
     inProgress: true,
     featured: true,
   },
-  // Exemplo — descomente e preencha:
+  // Exemplo: descomente e preencha:
   // {
   //   title: "Spring Boot 3: desenvolva uma API Rest em Java",
   //   institution: "Alura",

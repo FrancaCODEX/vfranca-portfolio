@@ -2,7 +2,7 @@ import type { Locale } from "./config";
 
 const pt = {
   meta: {
-    title: "Vinicius França — Desenvolvedor Back-end",
+    title: "Vinicius França | Desenvolvedor Back-end",
     description:
       "Desenvolvedor Back-end em São Paulo. APIs REST, integrações financeiras e sistemas web com PHP/Laravel e Java/Spring Boot.",
   },
@@ -120,7 +120,7 @@ export type Dictionary = typeof pt;
 
 const en: Dictionary = {
   meta: {
-    title: "Vinicius França — Back-end Developer",
+    title: "Vinicius França | Back-end Developer",
     description:
       "Back-end developer based in São Paulo, Brazil. REST APIs, financial integrations and web systems with PHP/Laravel and Java/Spring Boot.",
   },

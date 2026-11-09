@@ -1,6 +1,6 @@
 /**
  * Dados pessoais e profissionais exibidos no site.
- * Para atualizar o portfólio, edite este arquivo — não é preciso mexer nos componentes.
+ * Para atualizar o portfólio, edite este arquivo; não é preciso mexer nos componentes.
  */
 import type { Localized } from "@/i18n/config";
 
@@ -14,7 +14,7 @@ export const profile = {
   } satisfies Localized,
   location: "São Paulo, BR",
   email: "vfranca.dev@gmail.com",
-  /** Formato internacional, só dígitos — usado no link do WhatsApp. */
+  /** Formato internacional, só dígitos, usado no link do WhatsApp. */
   whatsapp: "5511989159921",
   photo: "/images/vinicius.jpg",
   cv: "/cv-vinicius-franca.pdf",
@@ -38,13 +38,13 @@ export const profile = {
   about: {
     pt: [
       "Sou desenvolvedor back-end e trabalho desde 2024 com PHP, Laravel e APIs REST, atuando em integrações de sistemas financeiros relacionados ao Banco Central.",
-      "No dia a dia implemento regras de negócio, modelo dados, otimizo consultas SQL e resolvo incidentes em produção — sempre com foco em qualidade de código e integridade dos dados.",
-      "Fora do trabalho, me aprofundo em Java e Spring Boot construindo projetos completos, como o Fintry Finance — um SaaS de gestão financeira multiempresa com Spring Boot, PostgreSQL e React, integrado a cobranças Pix/boleto, com conciliação bancária, testes em CI e deploy com Docker.",
+      "No dia a dia implemento regras de negócio, modelo dados, otimizo consultas SQL e resolvo incidentes em produção, com foco em qualidade de código e integridade dos dados.",
+      "Fora do trabalho, me aprofundo em Java e Spring Boot construindo projetos completos, como o Fintry Finance, um sistema de gestão financeira para pequenas empresas. Ele usa Spring Boot, PostgreSQL e React, gera cobranças por Pix e boleto, faz conciliação bancária e roda testes automatizados a cada alteração.",
     ],
     en: [
       "I'm a back-end developer working since 2024 with PHP, Laravel and REST APIs, building integrations with financial systems connected to Brazil's Central Bank.",
-      "Day to day I implement business rules, model data, optimize SQL queries and handle production incidents — always focused on code quality and data integrity.",
-      "Outside work I go deep into Java and Spring Boot by building complete projects, like Fintry Finance — a multi-tenant financial management SaaS with Spring Boot, PostgreSQL and React, Pix/boleto billing, bank reconciliation, CI tests and Docker deployment.",
+      "Day to day I implement business rules, model data, optimize SQL queries and handle production incidents, with a focus on code quality and data integrity.",
+      "Outside work I go deep into Java and Spring Boot by building complete projects, like Fintry Finance, a financial management system for small businesses. It runs on Spring Boot, PostgreSQL and React, issues Pix and boleto charges, reconciles bank statements and runs automated tests on every change.",
     ],
   } satisfies Localized<string[]>,
   languages: [
@@ -101,7 +101,7 @@ export const services: Service[] = [
     title: { pt: "APIs REST sob medida", en: "Custom REST APIs" },
     description: {
       pt: "APIs em Laravel ou Spring Boot, documentadas, testadas e prontas para crescer.",
-      en: "Laravel or Spring Boot APIs — documented, tested and ready to scale.",
+      en: "Laravel or Spring Boot APIs, documented, tested and ready to scale.",
     },
   },
   {
