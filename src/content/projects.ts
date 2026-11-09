@@ -94,8 +94,8 @@ export const projects: Project[] = [
     modules: ["auth", "games", "diary", "reviews", "social/feed", "moderation", "integrations/rawg", "integrations/ggdeals"],
     image: {
       src: "/projects/critplay-destaque.webp",
-      width: 1905,
-      height: 914,
+      width: 1902,
+      height: 1079,
       alt: { pt: "Tela inicial do CritPlay com carrossel de destaques", en: "CritPlay home screen with the featured carousel" },
     },
   },
