@@ -24,6 +24,13 @@ export const profile = {
     // TODO: substituir pela URL real do seu LinkedIn.
     linkedin: "https://www.linkedin.com/in/",
   },
+  /** Palavras que giram no Hero: "Desenvolvedor back-end que constrói ___". */
+  heroWords: {
+    pt: ["APIs REST", "integrações financeiras", "regras de negócio", "sistemas web"],
+    en: ["REST APIs", "financial integrations", "business rules", "web systems"],
+  } satisfies Localized<string[]>,
+  /** Ano em que começou a trabalhar com back-end (usado no "Sobre"). */
+  since: 2024,
   /** Card "GET /api/vinicius" do Hero. */
   apiCard: {
     stack: ["PHP", "Laravel", "Java", "Spring Boot", "PostgreSQL"],

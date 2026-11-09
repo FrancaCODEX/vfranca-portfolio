@@ -25,7 +25,7 @@ export default async function EducationPage({ params }: PageProps<"/[lang]/forma
   const dict = getDictionary(lang);
 
   return (
-    <div className="mx-auto max-w-5xl px-5 py-16">
+    <div className="mx-auto max-w-6xl px-5 pb-16 pt-32">
       <Link href={`/${lang}#formacao`} className="inline-flex items-center gap-2 text-sm text-muted hover:text-fg">
         <ArrowLeft className="size-4" /> {dict.education.back}
       </Link>

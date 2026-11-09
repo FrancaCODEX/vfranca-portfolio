@@ -19,6 +19,8 @@ export type Project = {
   repository?: string;
   demo?: string;
   hasCaseStudy: boolean;
+  /** Módulos principais, mostrados como uma árvore de pastas no card. */
+  modules: string[];
 };
 
 export const projects: Project[] = [
@@ -47,6 +49,7 @@ export const projects: Project[] = [
     // TODO: link do repositório
     repository: undefined,
     hasCaseStudy: true,
+    modules: ["auth", "companies", "accounts", "transactions", "sales", "inventory", "reports", "cashflow"],
   },
   {
     slug: "critplay",
@@ -65,6 +68,7 @@ export const projects: Project[] = [
     // TODO: link do repositório
     repository: undefined,
     hasCaseStudy: true,
+    modules: ["auth", "games", "reviews", "profiles", "integrations/metadata"],
   },
 ];
 

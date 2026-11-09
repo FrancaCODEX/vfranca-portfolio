@@ -47,7 +47,7 @@ export default async function ProjectPage({ params }: PageProps<"/[lang]/projeto
   if (!CaseStudy) notFound();
 
   return (
-    <article className="mx-auto max-w-3xl px-5 py-16">
+    <article className="mx-auto max-w-3xl px-5 pb-16 pt-32">
       <Link href={`/${lang}#projetos`} className="inline-flex items-center gap-2 text-sm text-muted hover:text-fg">
         <ArrowLeft className="size-4" /> {dict.back}
       </Link>

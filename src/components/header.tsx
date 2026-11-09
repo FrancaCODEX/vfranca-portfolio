@@ -1,7 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { motion } from "motion/react";
 import { Menu, Search, X } from "lucide-react";
 import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries";
@@ -12,43 +14,71 @@ import { openPalette } from "./command-palette";
 
 type Props = { lang: Locale; dict: Dictionary["nav"] };
 
+const sectionIds = ["sobre", "experiencia", "formacao", "projetos", "servicos", "contato"] as const;
+
+/** Descobre qual seção está visível para destacar o link correspondente. */
+function useActiveSection(enabled: boolean) {
+  const [active, setActive] = useState<string | null>(null);
+  useEffect(() => {
+    if (!enabled) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) if (e.isIntersecting) setActive(e.target.id);
+      },
+      { rootMargin: "-45% 0px -50% 0px" },
+    );
+    for (const id of sectionIds) {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    }
+    return () => observer.disconnect();
+  }, [enabled]);
+  return enabled ? active : null;
+}
+
 export function Header({ lang, dict }: Props) {
   const [open, setOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
+  const pathname = usePathname();
   const home = `/${lang}`;
-  const links = [
-    { href: `${home}#sobre`, label: dict.about },
-    { href: `${home}#experiencia`, label: dict.experience },
-    { href: `${home}#formacao`, label: dict.education },
-    { href: `${home}#projetos`, label: dict.projects },
-    { href: `${home}#servicos`, label: dict.services },
-    { href: `${home}#contato`, label: dict.contact },
-  ];
+  const active = useActiveSection(pathname === home);
+
+  const labels: Record<(typeof sectionIds)[number], string> = {
+    sobre: dict.about,
+    experiencia: dict.experience,
+    formacao: dict.education,
+    projetos: dict.projects,
+    servicos: dict.services,
+    contato: dict.contact,
+  };
 
   return (
-    <header
-      className={cn(
-        "sticky top-0 z-40 border-b transition-colors",
-        scrolled || open ? "border-border bg-bg/80 backdrop-blur-md" : "border-transparent",
-      )}
-    >
-      <div className="mx-auto flex h-16 max-w-5xl items-center justify-between gap-4 px-5">
-        <Link href={home} className="font-mono text-sm font-semibold tracking-tight">
-          <span className="text-accent">~/</span>vfranca
+    <header className="fixed inset-x-0 top-3 z-40 px-3 sm:top-4">
+      <div className="mx-auto flex h-14 max-w-6xl items-center justify-between gap-3 rounded-2xl border border-border bg-bg/70 px-3 shadow-[0_8px_30px_-12px_rgb(0_0_0/0.25)] backdrop-blur-xl sm:px-4">
+        <Link href={home} className="flex items-center gap-2 font-mono text-sm font-semibold tracking-tight">
+          <span className="grid size-8 place-items-center rounded-lg bg-accent font-bold text-accent-fg">vf</span>
+          <span className="hidden sm:inline">
+            <span className="text-accent">~/</span>vfranca
+          </span>
         </Link>
 
-        <nav className="hidden items-center gap-1 md:flex" aria-label="Principal">
-          {links.map((l) => (
-            <a key={l.href} href={l.href} className="rounded-lg px-3 py-2 text-sm text-muted transition hover:text-fg">
-              {l.label}
+        <nav className="hidden items-center lg:flex" aria-label="Principal">
+          {sectionIds.map((id) => (
+            <a
+              key={id}
+              href={`${home}#${id}`}
+              className={cn(
+                "relative rounded-lg px-3 py-1.5 text-sm transition",
+                active === id ? "text-fg" : "text-muted hover:text-fg",
+              )}
+            >
+              {active === id && (
+                <motion.span
+                  layoutId="nav-active"
+                  className="absolute inset-0 -z-10 rounded-lg bg-surface-2"
+                  transition={{ type: "spring", stiffness: 400, damping: 35 }}
+                />
+              )}
+              {labels[id]}
             </a>
           ))}
         </nav>
@@ -57,11 +87,11 @@ export function Header({ lang, dict }: Props) {
           <button
             type="button"
             onClick={openPalette}
-            className="hidden h-9 items-center gap-2 rounded-lg border border-border px-3 text-xs text-muted transition hover:text-fg sm:flex"
+            className="hidden h-9 items-center gap-2 rounded-lg border border-border bg-surface/60 px-3 text-xs text-muted transition hover:text-fg sm:flex"
           >
             <Search className="size-3.5" />
             <span>{dict.search}</span>
-            <kbd className="font-mono text-[10px]">Ctrl K</kbd>
+            <kbd className="rounded border border-border px-1 font-mono text-[10px]">⌘K</kbd>
           </button>
           <button
             type="button"
@@ -78,7 +108,7 @@ export function Header({ lang, dict }: Props) {
             onClick={() => setOpen((v) => !v)}
             aria-label={dict.openMenu}
             aria-expanded={open}
-            className="grid size-9 place-items-center rounded-lg text-muted hover:bg-surface-2 hover:text-fg md:hidden"
+            className="grid size-9 place-items-center rounded-lg text-muted hover:bg-surface-2 hover:text-fg lg:hidden"
           >
             {open ? <X className="size-4" /> : <Menu className="size-4" />}
           </button>
@@ -86,18 +116,24 @@ export function Header({ lang, dict }: Props) {
       </div>
 
       {open && (
-        <nav className="border-t border-border px-5 py-3 md:hidden" aria-label="Mobile">
-          {links.map((l) => (
+        <motion.nav
+          initial={{ opacity: 0, y: -8 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mx-auto mt-2 max-w-6xl rounded-2xl border border-border bg-bg/90 p-2 shadow-xl backdrop-blur-xl lg:hidden"
+          aria-label="Mobile"
+        >
+          {sectionIds.map((id, i) => (
             <a
-              key={l.href}
-              href={l.href}
+              key={id}
+              href={`${home}#${id}`}
               onClick={() => setOpen(false)}
-              className="block rounded-lg px-2 py-2.5 text-sm text-muted hover:text-fg"
+              className="flex items-center gap-3 rounded-xl px-3 py-3 text-sm text-muted hover:bg-surface-2 hover:text-fg"
             >
-              {l.label}
+              <span className="font-mono text-xs text-accent">0{i + 1}</span>
+              {labels[id]}
             </a>
           ))}
-        </nav>
+        </motion.nav>
       )}
     </header>
   );

@@ -3,22 +3,38 @@ import { profile } from "@/content/profile";
 import { GithubIcon, LinkedinIcon } from "./icons";
 
 export function Footer({ dict }: { dict: Dictionary["footer"] }) {
+  const social = [
+    { href: profile.links.github, label: "GitHub", Icon: GithubIcon },
+    { href: profile.links.linkedin, label: "LinkedIn", Icon: LinkedinIcon },
+  ];
+
   return (
-    <footer className="border-t border-border">
-      <div className="mx-auto flex max-w-5xl flex-col items-center justify-between gap-4 px-5 py-8 text-sm text-muted sm:flex-row">
-        <p>
+    <footer className="relative overflow-hidden border-t border-border">
+      <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-5 pt-10 text-sm text-muted sm:flex-row">
+        <p className="text-center sm:text-left">
           © {new Date().getFullYear()} {profile.name}. {dict.built}
         </p>
-        <div className="flex items-center gap-3">
-          <a href={profile.links.github} target="_blank" rel="noreferrer" aria-label="GitHub" className="hover:text-fg">
-            <GithubIcon className="size-4" />
-          </a>
-          <a href={profile.links.linkedin} target="_blank" rel="noreferrer" aria-label="LinkedIn" className="hover:text-fg">
-            <LinkedinIcon className="size-4" />
-          </a>
+        <div className="flex items-center gap-2">
+          {social.map(({ href, label, Icon }) => (
+            <a
+              key={label}
+              href={href}
+              target="_blank"
+              rel="noreferrer"
+              aria-label={label}
+              className="grid size-9 place-items-center rounded-lg border border-border transition hover:border-accent hover:text-accent"
+            >
+              <Icon className="size-4" />
+            </a>
+          ))}
         </div>
       </div>
+      <p
+        aria-hidden="true"
+        className="pointer-events-none mt-6 select-none bg-gradient-to-b from-fg/10 to-transparent bg-clip-text text-center text-[22vw] font-bold leading-[0.8] tracking-tighter text-transparent"
+      >
+        vfranca
+      </p>
     </footer>
   );
 }
-
