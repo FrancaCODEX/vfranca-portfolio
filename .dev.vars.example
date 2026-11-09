@@ -1,0 +1,5 @@
+# Copie para .dev.vars (preview local com wrangler) e/ou .env.local (next dev)
+RESEND_API_KEY=
+CONTACT_TO_EMAIL=vfranca.dev@gmail.com
+TURNSTILE_SECRET_KEY=
+NEXT_PUBLIC_TURNSTILE_SITE_KEY=

@@ -1,0 +1,55 @@
+## O problema
+
+Pequenas empresas costumam controlar finanças em planilhas espalhadas: contas a pagar e a receber, vendas e estoque não conversam entre si, e ninguém sabe ao certo como estará o caixa no mês que vem.
+
+O **Fintry Finance** centraliza isso numa única aplicação, com suporte a **várias empresas** e **perfis de acesso** diferentes para cada usuário.
+
+## Principais funcionalidades
+
+- Gestão de contas, receitas e despesas
+- Vendas e controle de estoque
+- **Fluxo de caixa projetado**
+- Relatórios e exportações
+- Autenticação, perfis de acesso e **isolamento de dados por empresa**
+
+## Arquitetura
+
+```text
+Cliente ──HTTP──▶ Spring Security (autenticação + perfis)
+                        │
+                        ▼
+                 Controllers REST
+                        │
+                        ▼
+              Services (regras financeiras, @Transactional)
+                        │
+                        ▼
+           Repositories JPA ──▶ PostgreSQL (migrações Flyway)
+```
+
+## Decisões técnicas
+
+### Isolamento por empresa (multi-tenant)
+
+Cada registro pertence a uma empresa, e o acesso é sempre filtrado pela empresa do usuário autenticado. Assim, um usuário **nunca** enxerga dados de outra empresa, mesmo que tente acessar um ID diretamente.
+
+### Transações consistentes
+
+Operações financeiras que alteram mais de uma entidade (por exemplo, uma venda que baixa o estoque e gera uma receita) rodam dentro de uma única transação: ou tudo é gravado, ou nada é.
+
+### Banco versionado com Flyway
+
+Toda mudança de schema é uma migração versionada no repositório. O banco de qualquer ambiente pode ser recriado do zero, de forma previsível.
+
+## Qualidade
+
+- **Testes de integração** rodando contra H2 e PostgreSQL
+- **Pipeline de CI no GitHub Actions** executando build e testes a cada push
+- Ambiente local com **Docker**
+
+## Próximos passos
+
+{/* TODO: Vinicius — liste aqui o que vem a seguir no projeto. */}
+
+- Documentação da API com OpenAPI/Swagger
+- Deploy de uma demo pública

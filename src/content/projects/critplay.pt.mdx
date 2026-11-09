@@ -1,0 +1,23 @@
+## O projeto
+
+O **CritPlay** é uma plataforma de comunidade de jogos: usuários navegam por um catálogo, avaliam os jogos que jogaram e mantêm um perfil com seu histórico.
+
+## Principais funcionalidades
+
+- Cadastro e login com **Spring Security**
+- Catálogo de jogos
+- Avaliações e notas
+- Perfis de usuário
+- **Integração com API externa** para buscar metadados dos jogos (capa, gêneros, lançamento)
+
+## Decisões técnicas
+
+### Integração com API externa
+
+Os metadados vêm de um serviço de terceiros. A aplicação consome essa API e mapeia a resposta para o modelo interno, de modo que o restante do sistema não depende do formato do provedor.
+
+### Persistência com JPA
+
+Jogos, usuários e avaliações são entidades JPA com relacionamentos bem definidos, o que permite consultas como "média de notas por jogo" diretamente no banco.
+
+{/* TODO: Vinicius — adicione prints, desafios que você enfrentou e o que aprendeu. */}

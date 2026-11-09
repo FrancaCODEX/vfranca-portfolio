@@ -1,0 +1,21 @@
+## The project
+
+**CritPlay** is a gaming community platform: users browse a catalog, review the games they've played and keep a profile with their history.
+
+## Key features
+
+- Sign-up and login with **Spring Security**
+- Game catalog
+- Reviews and ratings
+- User profiles
+- **External API integration** to fetch game metadata (cover, genres, release date)
+
+## Technical decisions
+
+### External API integration
+
+Metadata comes from a third-party service. The application consumes that API and maps the response into its internal model, so the rest of the system doesn't depend on the provider's format.
+
+### Persistence with JPA
+
+Games, users and reviews are JPA entities with well-defined relationships, which allows queries such as "average rating per game" to run directly in the database.

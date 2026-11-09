@@ -1,0 +1,53 @@
+## The problem
+
+Small businesses often manage their finances in scattered spreadsheets: payables, receivables, sales and inventory don't talk to each other, and nobody really knows what next month's cash position will look like.
+
+**Fintry Finance** brings all of that into a single application, with support for **multiple companies** and different **access roles** for each user.
+
+## Key features
+
+- Accounts, income and expense management
+- Sales and inventory control
+- **Projected cash flow**
+- Reports and exports
+- Authentication, access roles and **per-company data isolation**
+
+## Architecture
+
+```text
+Client ──HTTP──▶ Spring Security (authentication + roles)
+                       │
+                       ▼
+                REST Controllers
+                       │
+                       ▼
+           Services (financial rules, @Transactional)
+                       │
+                       ▼
+          JPA Repositories ──▶ PostgreSQL (Flyway migrations)
+```
+
+## Technical decisions
+
+### Per-company isolation (multi-tenant)
+
+Every record belongs to a company, and access is always filtered by the authenticated user's company. A user can **never** see another company's data, even when requesting an ID directly.
+
+### Consistent transactions
+
+Financial operations that touch more than one entity (for example, a sale that lowers inventory and records income) run inside a single transaction: either everything is saved, or nothing is.
+
+### Versioned database with Flyway
+
+Every schema change is a versioned migration in the repository, so any environment's database can be rebuilt from scratch, predictably.
+
+## Quality
+
+- **Integration tests** running against H2 and PostgreSQL
+- **CI pipeline on GitHub Actions** running build and tests on every push
+- Local environment with **Docker**
+
+## Next steps
+
+- API documentation with OpenAPI/Swagger
+- Public demo deployment

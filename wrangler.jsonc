@@ -1,0 +1,24 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "vfranca-portfolio",
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2026-11-01",
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  },
+  "services": [
+    {
+      // Auto-referência exigida pelo OpenNext — o nome precisa ser igual ao "name" acima.
+      "binding": "WORKER_SELF_REFERENCE",
+      "service": "vfranca-portfolio"
+    }
+  ],
+  "observability": { "enabled": true },
+  "vars": {
+    "CONTACT_TO_EMAIL": "vfranca.dev@gmail.com"
+  }
+  // Segredos (NÃO coloque aqui): RESEND_API_KEY e TURNSTILE_SECRET_KEY
+  // → npx wrangler secret put RESEND_API_KEY
+}
