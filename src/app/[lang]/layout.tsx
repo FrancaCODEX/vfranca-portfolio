@@ -38,7 +38,7 @@ export async function generateMetadata({ params }: LayoutProps<"/[lang]">): Prom
       description: dict.meta.description,
       locale: lang === "pt" ? "pt_BR" : "en_US",
       url: `/${lang}`,
-      images: [{ url: profile.photo, width: 336, height: 336 }],
+      images: [{ url: profile.photo, width: 800, height: 1000 }],
     },
   };
 }
