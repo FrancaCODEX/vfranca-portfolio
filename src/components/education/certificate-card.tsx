@@ -29,7 +29,7 @@ export function CertificateCard({ cert, lang, dict }: Props) {
           cert.date && <span className="font-mono text-[11px] text-muted">{formatMonth(cert.date, lang)}</span>
         )}
       </div>
-      <p className="mt-4 font-mono text-[11px] uppercase tracking-wider text-muted">{pick(categoryLabels[cert.category], lang)}</p>
+      <p className="mt-4 font-mono text-[11px] uppercase tracking-wider text-muted">{pick(cert.kind ?? categoryLabels[cert.category], lang)}</p>
       <h3 className="mt-1 font-semibold leading-snug">{cert.title}</h3>
       <p className="mt-1 text-sm text-muted">
         {cert.institution}

@@ -53,6 +53,8 @@ const pt = {
   education: {
     inProgress: "Em andamento",
     viewCertificate: "Ver certificado",
+    verifyDegree: "Validar diploma",
+    code: "código",
     viewAll: "Ver todos os certificados",
     allTitle: "Formação & Certificados",
     allDescription: "Graduação, cursos e certificados que fazem parte da minha trajetória.",
@@ -171,6 +173,8 @@ const en: Dictionary = {
   education: {
     inProgress: "In progress",
     viewCertificate: "View certificate",
+    verifyDegree: "Verify degree",
+    code: "code",
     viewAll: "See all certificates",
     allTitle: "Education & Certificates",
     allDescription: "Degree, courses and certificates that are part of my journey.",
