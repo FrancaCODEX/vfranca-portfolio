@@ -38,7 +38,14 @@ export async function generateMetadata({ params }: LayoutProps<"/[lang]">): Prom
       description: dict.meta.description,
       locale: lang === "pt" ? "pt_BR" : "en_US",
       url: `/${lang}`,
-      images: [{ url: profile.photo, width: 800, height: 1000 }],
+      siteName: profile.name,
+      images: [{ url: `/og-${lang}.png`, width: 1200, height: 630, alt: dict.meta.title }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: dict.meta.title,
+      description: dict.meta.description,
+      images: [`/og-${lang}.png`],
     },
   };
 }
