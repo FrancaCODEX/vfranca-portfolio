@@ -1,6 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "vfranca-portifolio",
+  "name": "vfranca-portfolio",
   "main": ".open-next/worker.js",
   "compatibility_date": "2026-11-01",
   "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
@@ -12,7 +12,7 @@
     {
       // Auto-referência exigida pelo OpenNext — o nome precisa ser igual ao "name" acima.
       "binding": "WORKER_SELF_REFERENCE",
-      "service": "vfranca-portifolio"
+      "service": "vfranca-portfolio"
     }
   ],
   "observability": { "enabled": true },
