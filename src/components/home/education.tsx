@@ -30,17 +30,9 @@ export function DegreeList({ lang, dict }: Pick<Props, "lang" | "dict">) {
                 {d.start} – {d.inProgress ? dict.inProgress : d.end}
               </span>
               {d.verification && (
-                <a
-                  href={d.verification.url}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="text-right text-sm font-medium text-accent hover:underline"
-                >
-                  {dict.verifyDegree}
-                  <span className="block font-mono text-[11px] font-normal text-muted">
-                    {dict.code}: {d.verification.code}
-                  </span>
-                </a>
+                <span className="font-mono text-[11px] text-muted">
+                  {dict.code}: {d.verification.code}
+                </span>
               )}
               {d.link && (
                 <a href={d.link} target="_blank" rel="noreferrer" className="text-sm font-medium text-accent hover:underline">
