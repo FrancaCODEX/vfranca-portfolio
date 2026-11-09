@@ -70,7 +70,7 @@ export const projects: Project[] = [
       en: "Gaming community to log what you play, publish reviews and find your next game. Includes a social feed, moderation and PC prices.",
     },
     period: "2026",
-    status: { pt: "Concluído", en: "Completed" },
+    status: { pt: "No ar", en: "Live" },
     version: "v0.5.3",
     stack: ["Java 17", "Spring Boot 3", "Spring Security", "JPA", "Flyway", "PostgreSQL", "H2", "JavaScript"],
     highlights: {
@@ -88,8 +88,7 @@ export const projects: Project[] = [
       ],
     },
     repository: "https://github.com/FrancaCODEX/CritPlay",
-    // Demo desativada pela Vercel (limite do plano). Recoloque quando voltar ao ar:
-    // demo: "https://critplay.vercel.app",
+    demo: "https://critplay.onrender.com",
     hasCaseStudy: true,
     modules: ["auth", "games", "diary", "reviews", "social/feed", "moderation", "integrations/rawg", "integrations/ggdeals"],
     image: {
