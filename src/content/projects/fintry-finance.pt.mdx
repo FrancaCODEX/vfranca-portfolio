@@ -1,55 +1,60 @@
+![Dashboard do Fintry com dados fictícios](/projects/fintry-dashboard.webp)
+
 ## O problema
 
-Pequenas empresas costumam controlar finanças em planilhas espalhadas: contas a pagar e a receber, vendas e estoque não conversam entre si, e ninguém sabe ao certo como estará o caixa no mês que vem.
+Pequenas empresas costumam controlar as finanças em planilhas espalhadas: contas a pagar e a receber, vendas e estoque não conversam entre si, e ninguém sabe ao certo como estará o caixa no mês que vem.
 
-O **Fintry Finance** centraliza isso numa única aplicação, com suporte a **várias empresas** e **perfis de acesso** diferentes para cada usuário.
+O **Fintry** reúne tudo isso numa única aplicação em português, com várias empresas, equipes e **perfis de acesso** (Administrador, Financeiro e Somente leitura).
 
-## Principais funcionalidades
+## O que já funciona
 
-- Gestão de contas, receitas e despesas
-- Vendas e controle de estoque
-- **Fluxo de caixa projetado**
-- Relatórios e exportações
-- Autenticação, perfis de acesso e **isolamento de dados por empresa**
+- **Financeiro:** contas com saldo calculado, receitas e despesas, parcelamentos e recorrências (2 a 120 ocorrências), pagamentos parciais e transferências atômicas entre contas
+- **Fluxo de caixa projetado** por dia, com indicação de saldo negativo, e um simulador que compara hipóteses sem alterar os registros
+- **Vendas, estoque, serviços e propostas:** a aprovação de uma proposta gera a venda e a receita na mesma transação
+- **Conciliação bancária:** importação de extratos OFX com prévia e decisão por movimento (vincular, criar lançamento ou ignorar com motivo)
+- **Cobranças integradas ao Asaas:** Pix/boleto, sandbox, consulta e **webhook** de confirmação
+- **Orçamentos por categoria**, central de pendências e relatórios exportáveis em **CSV, Excel e PDF**
+- **Equipe e segurança:** convites com expiração, recuperação de senha de uso único, encerramento de sessões ao trocar a senha e **histórico de alterações** (auditoria)
 
 ## Arquitetura
 
+O backend é um **monólito modular** em Spring Boot. Cada domínio é um módulo com sua própria camada de controller, service e repository, e a interface em React é servida pelo próprio backend.
+
 ```text
-Cliente ──HTTP──▶ Spring Security (autenticação + perfis)
-                        │
-                        ▼
-                 Controllers REST
-                        │
-                        ▼
-              Services (regras financeiras, @Transactional)
-                        │
-                        ▼
-           Repositories JPA ──▶ PostgreSQL (migrações Flyway)
+React (TypeScript, Vite)
+        │  HTTP + sessão
+        ▼
+Spring Security ── perfis: ADMIN · FINANCEIRO · LEITURA
+        │
+        ▼
+Controllers REST  /api/v1/...
+        │
+        ▼
+Services (regras financeiras, @Transactional)
+        │
+        ▼
+Repositories JPA ──▶ PostgreSQL 17   (migrações Flyway)
+        │
+        └──▶ Asaas (Pix/boleto)  ◀── webhook
 ```
 
 ## Decisões técnicas
 
-### Isolamento por empresa (multi-tenant)
+### Isolamento por empresa
 
-Cada registro pertence a uma empresa, e o acesso é sempre filtrado pela empresa do usuário autenticado. Assim, um usuário **nunca** enxerga dados de outra empresa, mesmo que tente acessar um ID diretamente.
+A empresa de cada operação é **derivada da sessão autenticada**, nunca de um parâmetro enviado pelo cliente. Assim, um usuário não enxerga dados de outra empresa nem tentando acessar um ID diretamente. Isso vale também para os comprovantes (PDF e imagens).
 
-### Transações consistentes
+### Consistência em operações financeiras
 
-Operações financeiras que alteram mais de uma entidade (por exemplo, uma venda que baixa o estoque e gera uma receita) rodam dentro de uma única transação: ou tudo é gravado, ou nada é.
+Confirmar uma venda confere o estoque de novo, registra as saídas e cria uma única receita vinculada. Se qualquer etapa falhar, **toda a confirmação é revertida**. Repetir a confirmação é idempotente: não gera uma segunda receita nem uma segunda baixa de estoque.
 
-### Banco versionado com Flyway
+### Histórico preservado
 
-Toda mudança de schema é uma migração versionada no repositório. O banco de qualquer ambiente pode ser recriado do zero, de forma previsível.
+Lançamentos realizados não são editados. Para corrigir, eles são cancelados e registrados de novo, o que mantém o saldo e a auditoria sempre explicáveis.
 
-## Qualidade
+## Qualidade e operação
 
-- **Testes de integração** rodando contra H2 e PostgreSQL
-- **Pipeline de CI no GitHub Actions** executando build e testes a cada push
-- Ambiente local com **Docker**
-
-## Próximos passos
-
-{/* TODO: Vinicius — liste aqui o que vem a seguir no projeto. */}
-
-- Documentação da API com OpenAPI/Swagger
-- Deploy de uma demo pública
+- **CI no GitHub Actions** com Java 21: testes em **H2 e PostgreSQL 17**, build da imagem Docker e instalação isolada da composição de produção
+- Teste automatizado de **backup e restauração**, incluindo a recusa de um arquivo corrompido
+- Ambiente de produção com **Docker, HTTPS via Caddy, SMTP com TLS** e checagens de *readiness* e *liveness*
+- Documentação com ADRs, regras de negócio, diagrama ER e guias de deploy

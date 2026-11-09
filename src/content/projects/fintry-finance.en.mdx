@@ -1,53 +1,60 @@
+![Fintry dashboard with sample data](/projects/fintry-dashboard.webp)
+
 ## The problem
 
 Small businesses often manage their finances in scattered spreadsheets: payables, receivables, sales and inventory don't talk to each other, and nobody really knows what next month's cash position will look like.
 
-**Fintry Finance** brings all of that into a single application, with support for **multiple companies** and different **access roles** for each user.
+**Fintry** brings all of that into a single application, with multiple companies, teams and **access roles** (Admin, Finance and Read-only).
 
-## Key features
+## What already works
 
-- Accounts, income and expense management
-- Sales and inventory control
-- **Projected cash flow**
-- Reports and exports
-- Authentication, access roles and **per-company data isolation**
+- **Finance:** accounts with computed balances, income and expenses, installments and recurring entries (2 to 120 occurrences), partial payments and atomic transfers between accounts
+- **Projected daily cash flow** that flags negative balances, plus a simulator that compares scenarios without touching real records
+- **Sales, inventory, services and proposals:** approving a proposal creates the sale and the income in a single transaction
+- **Bank reconciliation:** OFX statement import with a preview and a decision per movement (link, create an entry, or ignore with a reason)
+- **Asaas billing integration:** Pix/boleto, sandbox, status lookup and confirmation **webhooks**
+- **Category budgets**, a pending-items center and reports exportable to **CSV, Excel and PDF**
+- **Team and security:** expiring invites, single-use password recovery, session invalidation on password change and a full **change history** (audit trail)
 
 ## Architecture
 
+The backend is a **modular monolith** in Spring Boot. Each domain is a module with its own controller, service and repository layers, and the React UI is served by the backend itself.
+
 ```text
-Client ──HTTP──▶ Spring Security (authentication + roles)
-                       │
-                       ▼
-                REST Controllers
-                       │
-                       ▼
-           Services (financial rules, @Transactional)
-                       │
-                       ▼
-          JPA Repositories ──▶ PostgreSQL (Flyway migrations)
+React (TypeScript, Vite)
+        │  HTTP + session
+        ▼
+Spring Security ── roles: ADMIN · FINANCE · READ-ONLY
+        │
+        ▼
+REST Controllers  /api/v1/...
+        │
+        ▼
+Services (financial rules, @Transactional)
+        │
+        ▼
+JPA Repositories ──▶ PostgreSQL 17   (Flyway migrations)
+        │
+        └──▶ Asaas (Pix/boleto)  ◀── webhook
 ```
 
 ## Technical decisions
 
-### Per-company isolation (multi-tenant)
+### Per-company isolation
 
-Every record belongs to a company, and access is always filtered by the authenticated user's company. A user can **never** see another company's data, even when requesting an ID directly.
+The company behind each operation is **derived from the authenticated session**, never from a client-sent parameter. A user can't see another company's data, even by requesting an ID directly. The same applies to uploaded receipts (PDF and images).
 
-### Consistent transactions
+### Consistent financial operations
 
-Financial operations that touch more than one entity (for example, a sale that lowers inventory and records income) run inside a single transaction: either everything is saved, or nothing is.
+Confirming a sale re-checks inventory, records stock movements and creates a single linked income entry. If any step fails, **the whole confirmation is rolled back**. Confirming again is idempotent: no second income entry and no second stock movement.
 
-### Versioned database with Flyway
+### Preserved history
 
-Every schema change is a versioned migration in the repository, so any environment's database can be rebuilt from scratch, predictably.
+Settled entries are never edited. To fix one, it's cancelled and recorded again, so balances and the audit trail always stay explainable.
 
-## Quality
+## Quality and operations
 
-- **Integration tests** running against H2 and PostgreSQL
-- **CI pipeline on GitHub Actions** running build and tests on every push
-- Local environment with **Docker**
-
-## Next steps
-
-- API documentation with OpenAPI/Swagger
-- Public demo deployment
+- **GitHub Actions CI** on Java 21: tests on **H2 and PostgreSQL 17**, Docker image build and an isolated install of the production stack
+- Automated **backup and restore** test, including rejecting a corrupted file
+- Production setup with **Docker, HTTPS via Caddy, SMTP over TLS** and readiness/liveness probes
+- Documentation with ADRs, business rules, an ER diagram and deployment guides

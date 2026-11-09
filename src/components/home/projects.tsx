@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight, ExternalLink } from "lucide-react";
 import { pick, type Locale } from "@/i18n/config";
@@ -8,6 +9,31 @@ import { GithubIcon } from "../icons";
 import { SpotlightCard } from "../fx/spotlight-card";
 
 type Props = { lang: Locale; title: string; eyebrow: string; dict: Dictionary["projects"] };
+
+/** Screenshot dentro de uma "janela" de navegador. */
+function Screenshot({ project, lang }: { project: Project; lang: Locale }) {
+  const image = project.image!;
+  return (
+    <div className="overflow-hidden rounded-xl border border-border bg-bg/70 shadow-2xl">
+      <div className="flex items-center gap-1.5 border-b border-border px-3 py-2 font-mono text-[12px]">
+        <span className="size-2.5 rounded-full bg-[#ff5f57]" />
+        <span className="size-2.5 rounded-full bg-[#febc2e]" />
+        <span className="size-2.5 rounded-full bg-[#28c840]" />
+        <span className="ml-2 truncate text-muted">{project.demo?.replace(/^https?:\/\//, "") ?? `${project.slug}.local`}</span>
+      </div>
+      <div className="relative aspect-[16/11] overflow-hidden">
+        <Image
+          src={image.src}
+          alt={pick(image.alt, lang)}
+          width={image.width}
+          height={image.height}
+          sizes="(min-width: 1024px) 560px, 100vw"
+          className="w-full object-cover object-top transition duration-700 group-hover:scale-[1.03]"
+        />
+      </div>
+    </div>
+  );
+}
 
 /** "Janela" de editor mostrando os módulos do projeto como uma árvore de pastas. */
 function ModuleTree({ project }: { project: Project }) {
@@ -43,6 +69,12 @@ export function ProjectsSection({ lang, title, eyebrow, dict }: Props) {
             <div className={i % 2 === 1 ? "lg:order-2" : undefined}>
               <div className="flex items-center gap-3 font-mono text-xs text-muted">
                 <span>{p.period}</span>
+                {p.version && (
+                  <>
+                    <span className="size-1 rounded-full bg-muted" />
+                    <span>{p.version}</span>
+                  </>
+                )}
                 <span className="size-1 rounded-full bg-muted" />
                 <span className="text-accent">{pick(p.status, lang)}</span>
               </div>
@@ -94,7 +126,7 @@ export function ProjectsSection({ lang, title, eyebrow, dict }: Props) {
               </div>
             </div>
             <div className={i % 2 === 1 ? "lg:order-1" : undefined}>
-              <ModuleTree project={p} />
+              {p.image ? <Screenshot project={p} lang={lang} /> : <ModuleTree project={p} />}
             </div>
           </SpotlightCard>
         ))}

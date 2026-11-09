@@ -21,8 +21,7 @@ export const profile = {
   available: true,
   links: {
     github: "https://github.com/FrancaCODEX",
-    // TODO: substituir pela URL real do seu LinkedIn.
-    linkedin: "https://www.linkedin.com/in/",
+    linkedin: "https://www.linkedin.com/in/vinicius-azeredo-fran%C3%A7a/",
   },
   /** Palavras que giram no Hero: "Desenvolvedor back-end que constrói ___". */
   heroWords: {
@@ -40,12 +39,12 @@ export const profile = {
     pt: [
       "Sou desenvolvedor back-end e trabalho desde 2024 com PHP, Laravel e APIs REST, atuando em integrações de sistemas financeiros relacionados ao Banco Central.",
       "No dia a dia implemento regras de negócio, modelo dados, otimizo consultas SQL e resolvo incidentes em produção — sempre com foco em qualidade de código e integridade dos dados.",
-      "Fora do trabalho, me aprofundo em Java e Spring Boot construindo projetos completos, como o Fintry Finance: uma aplicação de gestão financeira multiempresa com Spring Security, Flyway, testes de integração e CI.",
+      "Fora do trabalho, me aprofundo em Java e Spring Boot construindo projetos completos, como o Fintry Finance — um SaaS de gestão financeira multiempresa com Spring Boot, PostgreSQL e React, integrado a cobranças Pix/boleto, com conciliação bancária, testes em CI e deploy com Docker.",
     ],
     en: [
       "I'm a back-end developer working since 2024 with PHP, Laravel and REST APIs, building integrations with financial systems connected to Brazil's Central Bank.",
       "Day to day I implement business rules, model data, optimize SQL queries and handle production incidents — always focused on code quality and data integrity.",
-      "Outside work I go deep into Java and Spring Boot by building complete projects, like Fintry Finance: a multi-tenant financial management app with Spring Security, Flyway, integration tests and CI.",
+      "Outside work I go deep into Java and Spring Boot by building complete projects, like Fintry Finance — a multi-tenant financial management SaaS with Spring Boot, PostgreSQL and React, Pix/boleto billing, bank reconciliation, CI tests and Docker deployment.",
     ],
   } satisfies Localized<string[]>,
   languages: [
@@ -130,6 +129,7 @@ export const stack: StackGroup[] = [
   { title: { pt: "Frameworks", en: "Frameworks" }, items: ["Laravel", "Spring Boot", "Spring Security", "JPA / Hibernate"] },
   { title: { pt: "Bancos de dados", en: "Databases" }, items: ["MySQL", "PostgreSQL", "MongoDB", "H2", "Flyway"] },
   { title: { pt: "Ferramentas & DevOps", en: "Tools & DevOps" }, items: ["Git", "Docker", "GitHub Actions", "APIs REST", "JSON / XML"] },
+  { title: { pt: "Front-end", en: "Front-end" }, items: ["React", "TypeScript", "HTML / CSS / JS"] },
   {
     title: { pt: "Práticas", en: "Practices" },
     items: [

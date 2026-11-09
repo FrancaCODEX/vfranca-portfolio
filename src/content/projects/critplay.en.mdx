@@ -1,21 +1,54 @@
 ## The project
 
-**CritPlay** is a gaming community platform: users browse a catalog, review the games they've played and keep a profile with their history.
+**CritPlay** is a gaming community: log what you're playing, rate it, publish reviews, follow people and find what to play next. The Java backend and the web UI run as a single application, with a live demo at [critplay.vercel.app](https://critplay.vercel.app).
 
-## Key features
+## Features
 
-- Sign-up and login with **Spring Security**
-- Game catalog
-- Reviews and ratings
-- User profiles
-- **External API integration** to fetch game metadata (cover, genres, release date)
+- **Catalog** with search and filters, admin editing and imports from the **RAWG API**, one by one or in batches of 500, 1,000 and 2,000 games
+- **Game diary** with progress, half-star ratings (0.5 to 5), reviews and dates, plus a library by status, favorites, wishlist and lists
+- **Social:** profiles with avatar and banner (GIFs included), up to four featured games, followers, friendships, an **activity feed** and review likes
+- **PC prices** via the GG.deals API
+- **Administration:** accounts and roles, suspension, reports, review moderation, blocking and cleanup of unused images
+- Session login, password change and email recovery (SMTP or Resend)
+
+## Architecture
+
+A modular monolith: static UI and REST API in the same Java process.
+
+```text
+HTML/CSS/JS ──HTTP──▶ Spring Security (session + CSRF, USER/ADMIN roles)
+                              │
+                              ▼
+                     REST Controllers /api/...
+                              │
+                              ▼
+                     Services (rules, visibility)
+                              │
+                              ▼
+        JPA Repositories ──▶ H2 (local) / PostgreSQL (prod) · Flyway
+                              │
+                              └──▶ RAWG (metadata) · GG.deals (prices)
+```
 
 ## Technical decisions
 
-### External API integration
+### Security on the server, not the UI
 
-Metadata comes from a third-party service. The application consumes that API and maps the response into its internal model, so the rest of the system doesn't depend on the provider's format.
+The frontend **never decides permissions on its own**. Without a login, protected routes return `401`. A regular user trying to add a game gets `403`, and so does any write without a CSRF token. Unknown fields are rejected, such as `role` on sign-up and `userId` in the diary, so nobody can escalate privileges through the request body.
 
-### Persistence with JPA
+### Predictable error contract
 
-Games, users and reviews are JPA entities with well-defined relationships, which allows queries such as "average rating per game" to run directly in the database.
+Invalid input returns `400`, a missing resource `404`, a conflict (e.g. a duplicate username) `409`, and a successful creation `201`. User entities are never serialized: the API only exposes a view with ID, username, name and role.
+
+### Resilient imports
+
+Batch imports save their progress and can be paused and resumed without creating duplicates. Genres are mapped to Portuguese, and uncertain Steam App ID matches are left blank for manual review instead of risking a wrong link.
+
+### Two databases, one schema
+
+H2 runs locally with zero setup and PostgreSQL runs in production, both versioned with **Flyway**. The project also ships a data migration tool between them.
+
+## Quality
+
+- GitHub Actions CI with PostgreSQL tests and browser navigation tests
+- Documented deployment (Vercel + Neon) plus operations, backup and migration guides

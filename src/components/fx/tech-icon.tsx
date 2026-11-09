@@ -12,6 +12,8 @@ import {
   siPostgresql,
   siPostman,
   siPython,
+  siReact,
+  siTypescript,
   siSpringboot,
   siSpringsecurity,
   type SimpleIcon,
@@ -35,6 +37,8 @@ export const techIcons: Record<string, SimpleIcon> = {
   Python: siPython,
   Flyway: siFlyway,
   Postman: siPostman,
+  React: siReact,
+  TypeScript: siTypescript,
 };
 
 type Props = { name: string; className?: string; colored?: boolean };
