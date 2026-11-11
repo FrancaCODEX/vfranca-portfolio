@@ -1,5 +1,7 @@
 # Copie para .dev.vars (preview local com wrangler) e/ou .env.local (next dev)
 RESEND_API_KEY=
 CONTACT_TO_EMAIL=vfranca.dev@gmail.com
+# Opcional: use o mesmo remetente verificado que o contato já usa.
+# CONTACT_FROM_EMAIL=Portfólio <seu-remetente-verificado>
 TURNSTILE_SECRET_KEY=
 NEXT_PUBLIC_TURNSTILE_SITE_KEY=
